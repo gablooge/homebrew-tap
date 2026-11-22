@@ -1,0 +1,40 @@
+# Homebrew's `brew tap-new` autobump template: once a day, `brew bump` checks PyPI (livecheck) and
+# opens a pull request when punk-records has a new version. Run the tests workflow on that branch
+# before merging (pull requests opened with GITHUB_TOKEN do not start other workflows).
+name: autobump
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/autobump.yml
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
+jobs:
+  autobump:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@ceec4e8419bb3c97ce96e9dda7738499ed5f869d # 2026.11.14.1
+      - name: Set up git
+        id: git_setup
+        uses: Homebrew/actions/git-user-config@ceec4e8419bb3c97ce96e9dda7738499ed5f869d # 2026.11.14.1
+      - name: Bump formulae
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOMEBREW_GIT_COMMITTER_NAME: ${{ steps.git_setup.outputs.name }}
+          HOMEBREW_GIT_COMMITTER_EMAIL: ${{ steps.git_setup.outputs.email }}
+          TAP_NAME: ${{ steps.set-up-homebrew.outputs.tap-name }}
+        run: brew bump --no-fork --open-pr --bump-synced --tap="$TAP_NAME"
