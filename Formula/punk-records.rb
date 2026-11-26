@@ -3,8 +3,8 @@ class PunkRecords < Formula
 
   desc "Sync AI agent memories (CLAUDE.md, AGENTS.md, rules) across machines"
   homepage "https://github.com/gablooge/punk-records"
-  url "https://files.pythonhosted.org/packages/69/70/16af36fb258626fa89609132ecf79eaaf189b617835f01b38405e12e719b/punk_records-0.6.1.tar.gz"
-  sha256 "3ac3363f638cefde325e270e9a2aa2ccca3ffdd565e5d0fd9001588f8c251d3a"
+  url "https://files.pythonhosted.org/packages/d5/ef/b537592d4a746110baa86da4294a18896dbdeb2c4213c2652b08aa7c095e/punk_records-0.6.2.tar.gz"
+  sha256 "813f42ef10b7ad521ebf3f1c67ad5b107ce570f067725dc9dbe1bf4bbee7806d"
   license "MIT"
 
   depends_on "python@3.15"
